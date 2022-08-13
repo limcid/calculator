@@ -74,7 +74,13 @@ div[class^="btn_col" ]{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 22px;
     color:rgb(57, 57, 57)
-}    
+}
+
+.btn:hover {
+    background-color: rgb(255, 162, 128);
+    cursor:pointer;
+    user-select: none;
+}
 
 #plus {
     height: 112px;
