@@ -1,3 +1,47 @@
+var enteredNum1, enteredNum2;
+const Operators = ["clear", "divide", "multiply", "subtract", "add"];
+
+const calcButtons = document.querySelectorAll('.btn').forEach(item => {
+  item.addEventListener('click', event => {
+    //handle click
+    console.log(item.id + ' Button clicked!');
+
+    switch (item.id) {
+      case "memClear":
+        alert("You pressed the Clear Memory button");
+        break;
+      case "changeSign":
+        alert("You pressed the Sign Change button");
+        break;
+      case "blank":
+        alert("You pressed the Blank button");
+        break;
+      case "clear":
+        document.getElementById('lcd').innerHTML = "";
+        break;
+      case "allClear":
+        document.getElementById('lcd').innerHTML = "";
+        break;
+      case "memRecall":
+        alert("You pressed the Memory Recall button");
+        break;
+      case "7":
+        document.getElementById('lcd').innerHTML += "7";
+        break;
+
+      default:
+        break;
+    }
+
+  });
+});
+
+
+
+function operate(num1, num2, operator) {
+
+}
+
 const add = function(num1, num2) {
 	return num1 + num2;
 };
