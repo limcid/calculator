@@ -1,4 +1,5 @@
 var enteredNum1 = "", enteredNum2 = "", entNumBuffer = "";
+var calculated = false;
 const Operators = ["clear", "divide", "multiply", "subtract", "add"];
 var currOperator = "";
 
@@ -15,7 +16,6 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
       case "blank":
         break;
       case "clear":
-        document.getElementById('lcd').innerHTML = "";
         clear();
         break;
       case "allClear":
@@ -25,38 +25,46 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
       case "memRecall":
         break;
       case "7":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "7";
         entNumBuffer += 7;
         break;
       case "4":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "4";
         entNumBuffer += 4;
         break;
       case "1":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "1";
         entNumBuffer += 1;
         break;
       case "0":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "0";
-        entNumBuffer += 1;
+        entNumBuffer += 0;
         break;
       case "memSubtract":
         //document.getElementById('lcd').innerHTML += "1";
         //entNumBuffer += 1;
         break;
       case "8":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "8";
         entNumBuffer += 8;
         break;
       case "5":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "5";
         entNumBuffer += 5;
         break;
       case "2":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "2";
         entNumBuffer += 2;
         break;
       case "decimal":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += ".";
         entNumBuffer += ".";
         break;
@@ -65,14 +73,17 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
         //entNumBuffer += 1;
         break;
       case "9":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "9";
         entNumBuffer += 9;
         break;
       case "6":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "6";
         entNumBuffer += 6;
         break;
       case "3":
+        if (calculated) { clear() };
         document.getElementById('lcd').innerHTML += "3";
         entNumBuffer += 3;
         break;
@@ -92,22 +103,61 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
           var eq = operate(enteredNum1, enteredNum2, currOperator);
           document.getElementById("lcd").innerHTML = eq;
           console.log("Back from performing operation, and the result equals: " + eq);
-
-          clear();
+          calculated = true;
+        // clear();
         }
 
         break;
       case "divide":
-        //document.getElementById('lcd').innerHTML += "1";
-        //entNumBuffer += 1;
+        console.log("--- Divide Key:");
+        console.log("Current enteredNum1 = " + enteredNum1);
+        console.log("enteredNum1.length BEFORE being assigned = " + enteredNum1.length);
+        
+        if (enteredNum1.length == 0) {
+          enteredNum1 = entNumBuffer;
+        }
+
+        entNumBuffer = "";
+        document.getElementById('lcd').innerHTML += " &#247 ";
+        currOperator = "divide";
+
+        console.log("enteredNum1 = " + enteredNum1);
+        console.log("enteredNum2 = " + enteredNum2);
+        console.log("--------------")
         break;
       case "multiply":
-        //document.getElementById('lcd').innerHTML += "1";
-        //entNumBuffer += 1;
+        console.log("--- Multiply Key:");
+        console.log("Current enteredNum1 = " + enteredNum1);
+        console.log("enteredNum1.length BEFORE being assigned = " + enteredNum1.length);
+        
+        if (enteredNum1.length == 0) {
+          enteredNum1 = entNumBuffer;
+        }
+
+        entNumBuffer = "";
+        document.getElementById('lcd').innerHTML += " x ";
+        currOperator = "multiply";
+
+        console.log("enteredNum1 = " + enteredNum1);
+        console.log("enteredNum2 = " + enteredNum2);
+        console.log("--------------")
         break;
       case "subtract":
-        //document.getElementById('lcd').innerHTML += "1";
-        //entNumBuffer += 1;
+        console.log("--- Subtract Key:");
+        console.log("Current enteredNum1 = " + enteredNum1);
+        console.log("enteredNum1.length BEFORE being assigned = " + enteredNum1.length);
+        
+        if (enteredNum1.length == 0) {
+          enteredNum1 = entNumBuffer;
+        }
+
+        entNumBuffer = "";
+        document.getElementById('lcd').innerHTML += " - ";
+        currOperator = "subtract";
+
+        console.log("enteredNum1 = " + enteredNum1);
+        console.log("enteredNum2 = " + enteredNum2);
+        console.log("--------------")
         break;
       case "1":
         document.getElementById('lcd').innerHTML += "1";
@@ -150,6 +200,25 @@ function operate(num1, num2, operator) {
       console.log("num2 value = " + num2);
       return add(num1, num2);
       break;
+    case "subtract":
+      console.log("Hello, from within the operator's subtract case.");
+      console.log("num1 value = " + num1);
+      console.log("num2 value = " + num2);
+      return subtract(num1, num2);
+      break;
+    case "multiply":
+      console.log("Hello, from within the operator's multiply case.");
+      console.log("num1 value = " + num1);
+      console.log("num2 value = " + num2);
+      return multiply(num1, num2);
+      break;
+    case "divide":
+      console.log("Hello, from within the operator's divide case.");
+      console.log("num1 value = " + num1);
+      console.log("num2 value = " + num2);
+      return divide(num1, num2);
+      break;
+
   
     default:
       break;
@@ -161,6 +230,8 @@ function clear() {
   enteredNum2 = "";
   entNumBuffer = "";
   currOperator = "";
+  document.getElementById('lcd').innerHTML = "";
+  calculated = false;
 }
 
 function add(num1, num2) {
@@ -171,28 +242,49 @@ function add(num1, num2) {
 	return parseInt(num1) + parseInt(num2);
 };
 
-const subtract = function(num1, num2) {
-	return num1 - num2;
+function subtract(num1, num2) {
+  console.log("Hello, from within the subtract function.");
+  console.log("num1 value = " + num1);
+  console.log("num2 value = " + num2);
+  console.log("The subtraction of num2 from num1 is " + (parseInt(num1) - parseInt(num2)));
+	return parseInt(num1) - parseInt(num2);
 };
 
-const sum = function(array) {
-	let numbers = Array.from(array)
-  var totalSum = 0;
-  for (let i = 0; i < numbers.length; i++) {
-    totalSum += numbers[i];
-  }
-  return totalSum;
+// const sum = function(array) {
+// 	let numbers = Array.from(array)
+//   var totalSum = 0;
+//   for (let i = 0; i < numbers.length; i++) {
+//     totalSum += numbers[i];
+//   }
+//   return totalSum;
+// };
+
+function multiply(num1, num2) {
+  console.log("Hello, from within the multiply function.");
+  console.log("num1 value = " + num1);
+  console.log("num2 value = " + num2);
+  console.log("The multiplication of num2 by num1 is " + (parseInt(num1) * parseInt(num2)));
+	return parseInt(num1) * parseInt(num2);
 };
 
-const multiply = function(array) {
-	let numbers = Array.from(array)
-  var finalProduct = 1;
-  for (let i = 0; i < numbers.length; i++) {
-    finalProduct *= numbers[i];
-  }
-  return finalProduct;
-
+function divide(num1, num2) {
+  console.log("Hello, from within the divide function.");
+  console.log("num1 value = " + num1);
+  console.log("num2 value = " + num2);
+  console.log("Dividing num1 by num2 is " + (parseInt(num1) / parseInt(num2)));
+	return parseInt(num1) / parseInt(num2);
 };
+
+
+// const multiply = function(array) {
+// 	let numbers = Array.from(array)
+//   var finalProduct = 1;
+//   for (let i = 0; i < numbers.length; i++) {
+//     finalProduct *= numbers[i];
+//   }
+//   return finalProduct;
+
+// };
 
 const power = function(num, power) {
 	var finalResult = 1;
