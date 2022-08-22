@@ -1,0 +1,102 @@
+{
+  "rootTopicKey": "9fee039b-eb39-47ae-b91a-2e506a0289e7",
+  "editorRootTopicKey": "9fee039b-eb39-47ae-b91a-2e506a0289e7",
+  "focusKey": "986f4edf-41b2-430c-90cb-a3ee6ab5a388",
+  "extData": {
+    "TOPIC_REFERENCE": {
+      "reference": {}
+    }
+  },
+  "topics": [
+    {
+      "key": "9fee039b-eb39-47ae-b91a-2e506a0289e7",
+      "parentKey": null,
+      "subKeys": [
+        "986f4edf-41b2-430c-90cb-a3ee6ab5a388"
+      ],
+      "collapse": false,
+      "style": "{\"contentStyle\":{\"borderRadius\":\"20px\",\"borderStyle\":\"none\",\"borderWidth\":\"0px\"}}",
+      "blocks": [
+        {
+          "type": "CONTENT",
+          "data": "Users should be able to string together\nseveral operations and get the right answer,\nwith each pair of numbers being evaluated at a time."
+        }
+      ]
+    },
+    {
+      "key": "986f4edf-41b2-430c-90cb-a3ee6ab5a388",
+      "parentKey": "9fee039b-eb39-47ae-b91a-2e506a0289e7",
+      "subKeys": [
+        "d8552c04-2ec8-4365-ac3d-a4bc1f5f2b25"
+      ],
+      "collapse": false,
+      "style": null,
+      "blocks": [
+        {
+          "type": "CONTENT",
+          "data": "variables needed"
+        }
+      ]
+    },
+    {
+      "key": "d8552c04-2ec8-4365-ac3d-a4bc1f5f2b25",
+      "parentKey": "986f4edf-41b2-430c-90cb-a3ee6ab5a388",
+      "subKeys": [],
+      "collapse": false,
+      "style": null,
+      "blocks": [
+        {
+          "type": "CONTENT",
+          "data": "track number pairs"
+        }
+      ]
+    }
+  ],
+  "config": {
+    "readOnly": false,
+    "allowUndo": true,
+    "layoutDir": 2,
+    "theme": {
+      "name": "default",
+      "randomColor": true,
+      "background": "rgb(57,60,65)",
+      "highlightColor": "#50C9CE",
+      "marginH": 60,
+      "marginV": 20,
+      "contentStyle": {
+        "lineHeight": "1.5",
+        "fontSize": "16px"
+      },
+      "linkStyle": {
+        "lineRadius": 5,
+        "lineType": "curve",
+        "lineWidth": "3px"
+      },
+      "rootTopic": {
+        "contentStyle": {
+          "fontSize": "36px"
+        },
+        "subLinkStyle": {
+          "lineType": "curve",
+          "lineWidth": "3px"
+        }
+      },
+      "primaryTopic": {
+        "contentStyle": {
+          "fontSize": "24px"
+        },
+        "subLinkStyle": {
+          "lineType": "curve",
+          "lineWidth": "3px"
+        }
+      },
+      "normalTopic": {
+        "subLinkStyle": {
+          "lineType": "curve",
+          "lineWidth": "3px"
+        }
+      }
+    }
+  },
+  "formatVersion": null
+}
