@@ -1,4 +1,10 @@
+//TODO Make font size in "lcd" smaller when length of entered numbers gets too long for proper display.
 var enteredNum1 = "", enteredNum2 = "", entNumBuffer = "";
+var enteredNum1_CSS = `background: #FFEB6E; color: black; padding: 3px; border-radius: .5em; border: 1px solid blue`;
+var enteredNum2_CSS = `background: #FFD433; color: black; padding: 3px; border-radius: .5em; border: 1px solid blue`;
+var genInfo_CSS = `background: black; color: yellow; padding: 3px; border-radius: .5em; border: 1px solid orange`;
+// var operatorKey = `background: green; color: black; padding: 3px; border-radius: .5em; border: 1px solid black`;
+
 var calculated = false;
 var currOperator = "";
 var calcMemory = 0;
@@ -7,8 +13,14 @@ var lcdContents = "";
 const calcButtons = document.querySelectorAll('.btn').forEach(item => {
   item.addEventListener('click', event => {
     //handle click
-    console.log(item.id + ' Button clicked!');
-
+    console.log("%c" + item.id + " Button clicked!",
+      `background: #E0E0E0;
+      color: black;
+      padding: 3px;
+      border-radius: .5em;
+      border: 1px solid blue`
+    );
+    
     switch (item.id) {
       case "memClear":
         calcMemory = 0;
@@ -110,10 +122,15 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
         break;
       case "divide":
         console.log("--- Divide Key:");
-        console.log("Current enteredNum1 = " + enteredNum1);
         
         if (enteredNum1.length == 0) {
           enteredNum1 = entNumBuffer;
+        }
+
+        if (currOperator.length > 0) { //then we are currently chaining operations
+          performEquals(enteredNum1, enteredNum2, entNumBuffer);
+          enteredNum1 = document.getElementById("lcd").innerHTML;
+          calculated = false; 
         }
 
         entNumBuffer = "";
@@ -126,8 +143,6 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
         break;
       case "multiply":
         console.log("--- Multiply Key:");
-        console.log("Current enteredNum1 = " + enteredNum1);
-        console.log("enteredNum1.length BEFORE being assigned = " + enteredNum1.length);
         
         if (enteredNum1.length == 0) {
           enteredNum1 = entNumBuffer;
@@ -149,7 +164,6 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
         break;
       case "subtract":
         console.log("--- Subtract Key:");
-        console.log("Current enteredNum1 = " + enteredNum1);
         
         if (enteredNum1.length == 0) {
           enteredNum1 = entNumBuffer;
@@ -158,7 +172,7 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
         if (currOperator.length > 0) { //then we are currently chaining operations
           performEquals(enteredNum1, enteredNum2, entNumBuffer);
           enteredNum1 = document.getElementById("lcd").innerHTML;
-          calculated = false; //questionable
+          calculated = false;
         }
 
         entNumBuffer = "";
@@ -173,25 +187,28 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
         document.getElementById('lcd').innerHTML += "1";
         entNumBuffer += 1;
         break;
-      case "plus":
-        console.log("--- Plus Key:");
-        console.log("Current enteredNum1 = " + enteredNum1);
-        
+        case "plus":
+          console.log("--- Plus Key:");
+          
         if (enteredNum1.length == 0) {
           enteredNum1 = entNumBuffer;
         }
+
+        if (enteredNum1.length == 0) {
+          return;
+        }
+      
         if (currOperator.length > 0) { //then we are currently chaining operations
           performEquals(enteredNum1, enteredNum2, entNumBuffer);
           enteredNum1 = document.getElementById("lcd").innerHTML;
-          calculated = false; //questionable
+          calculated = false;
         }
         
         entNumBuffer = "";
         document.getElementById('lcd').innerHTML += " + ";
         currOperator = "add";
-
-        console.log("enteredNum1 = " + enteredNum1);
-        console.log("enteredNum2 = " + enteredNum2);
+        console.log("%c enteredNum1 = " + enteredNum1, enteredNum1_CSS); 
+        console.log("%c enteredNum2 = " + enteredNum2, enteredNum2_CSS);
         console.log("--------------")
         break;
 
@@ -203,46 +220,64 @@ const calcButtons = document.querySelectorAll('.btn').forEach(item => {
 });
 
 function performEquals(num1, num2, num_buffer) {
-  console.log("--- performEquals function:")
-  if (enteredNum2.length == 0) {
-    enteredNum2 = entNumBuffer;
+  
+  if (enteredNum1.length == 0 && enteredNum2.length == 0) {
+    return;
   }
+    
+  console.log("%centeredNum1: " + enteredNum1 + " enteredNum2: " + enteredNum2, genInfo_CSS);
+  
+  console.log("--- performEquals function:")
+  if (enteredNum2.length == 0) {  // TODO enteredNum2 needs to be assigned before the equal key is pressed, not within performEquals function.
+    enteredNum2 = entNumBuffer;
+    console.log("%c enteredNum2 = " + enteredNum2, enteredNum2_CSS);
+  }
+
   if (enteredNum1.length > 0 && enteredNum2.length > 0) {
     var eq = operate(enteredNum1, enteredNum2, currOperator);
-    document.getElementById("lcd").innerHTML = eq;
-
-     calculated = true;
+    if (eq == Math.floor(eq)) {
+      document.getElementById("lcd").innerHTML = eq;
+    } else {
+      document.getElementById("lcd").innerHTML = parseFloat(eq.toFixed(3));
+    }
+    calculated = true;
   }
-  console.log("enteredNum1 = " + enteredNum1);
-  console.log("enteredNum2 = " + enteredNum2);
+
+  enteredNum1 = "";
+  enteredNum2 = "";
+  entNumBuffer = "";
+  console.log("%cEnteredNums have been cleared.", "color: blue; font-style: italic; font-weight: bold");
+  console.log("%centeredNum1 = " + enteredNum1, enteredNum1_CSS);
+  console.log("%centeredNum2 = " + enteredNum2, enteredNum2_CSS);
+  console.log("%centNumBuffer = " + entNumBuffer, enteredNum1_CSS);
   console.log("--------------")
 
 }
 
 function operate(num1, num2, operator) {
-  console.log("Hello, from the operate function!");
-  console.log("The passed operator param = " + operator);
+  console.log("%cHello, from the operate function!", genInfo_CSS);
+  console.log("%cThe passed operator param = " + operator, genInfo_CSS);
   switch (operator) {
     case "add":
-      console.log("Hello, from within the operator's add case.");
+      console.log("%cHello, from within the operator's add case.", genInfo_CSS);
       console.log("num1 value = " + num1);
       console.log("num2 value = " + num2);
       return add(num1, num2);
       break;
     case "subtract":
-      console.log("Hello, from within the operator's subtract case.");
+      console.log("%cHello, from within the operator's subtract case.", genInfo_CSS);
       console.log("num1 value = " + num1);
       console.log("num2 value = " + num2);
       return subtract(num1, num2);
       break;
     case "multiply":
-      console.log("Hello, from within the operator's multiply case.");
+      console.log("%cHello, from within the operator's multiply case.", genInfo_CSS);
       console.log("num1 value = " + num1);
       console.log("num2 value = " + num2);
       return multiply(num1, num2);
       break;
     case "divide":
-      console.log("Hello, from within the operator's divide case.");
+      console.log("%cHello, from within the operator's divide case.", genInfo_CSS);
       console.log("num1 value = " + num1);
       console.log("num2 value = " + num2);
       return divide(num1, num2);
@@ -264,19 +299,19 @@ function clear() {
 }
 
 function add(num1, num2) {
-  console.log("Hello, from within the add function.");
-  console.log("num1 value = " + num1);
-  console.log("num2 value = " + num2);
-  console.log("The addition of num1 and num2 is " + (parseInt(num1) + parseInt(num2)));
-	return parseInt(num1) + parseInt(num2);
+  console.log("%cHello, from within the add function.", genInfo_CSS);
+  // console.log("num1 value = " + num1);
+  // console.log("num2 value = " + num2);
+  console.log("%cThe addition of num1 and num2 is " + (parseFloat(num1) + parseFloat(num2)), genInfo_CSS);
+	return parseFloat(num1) + parseFloat(num2);
 };
 
 function subtract(num1, num2) {
   console.log("Hello, from within the subtract function.");
   console.log("num1 value = " + num1);
   console.log("num2 value = " + num2);
-  console.log("The subtraction of num2 from num1 is " + (parseInt(num1) - parseInt(num2)));
-	return parseInt(num1) - parseInt(num2);
+  console.log("%cThe subtraction of num2 from num1 is " + (parseFloat(num1) - parseFloat(num2)), genInfo_CSS);
+	return (parseFloat(num1) - parseFloat(num2));
 };
 
 // const sum = function(array) {
@@ -292,16 +327,16 @@ function multiply(num1, num2) {
   console.log("Hello, from within the multiply function.");
   console.log("num1 value = " + num1);
   console.log("num2 value = " + num2);
-  console.log("The multiplication of num1 by num2 is " + (parseInt(num1) * parseInt(num2)));
-	return parseInt(num1) * parseInt(num2);
+  console.log("The multiplication of num1 by num2 is " + (parseFloat(num1) * parseFloat(num2)));
+	return (parseFloat(num1) * parseFloat(num2));
 };
 
 function divide(num1, num2) {
   console.log("Hello, from within the divide function.");
   console.log("num1 value = " + num1);
   console.log("num2 value = " + num2);
-  console.log("Dividing num1 by num2 is " + (parseInt(num1) / parseInt(num2)));
-	return parseInt(num1) / parseInt(num2);
+  console.log("Dividing num1 by num2 is " + (parseFloat(num1) / parseFloat(num2)));
+	return (parseFloat(num1) / parseFloat(num2));
 };
 
 
